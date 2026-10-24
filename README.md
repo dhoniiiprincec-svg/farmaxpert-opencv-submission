@@ -1,284 +1,186 @@
+# 🌾 FarmXpert — AI-Powered Agronomy & Crop Health Analysis
 
+**An AI-assisted crop health monitoring system built with computer vision and deep learning.**
 
-\# Farmaxpert — Local Deployment Guide
+FarmXpert is designed to help users analyze crop images, identify potential plant diseases, evaluate image quality, and obtain structured results to support agricultural decision-making.
 
+## 🚀 Live Demo
 
+- **Dashboard:** https://d1p1tenqj0s2gy.cloudfront.net
+- **Backend health endpoint:** https://zarfg6ldbqtjfhoffjiqddvxcm0mwuka.lambda-url.ap-southeast-2.on.aws/api/v1/health
 
-\## 1. Project Overview
+The dashboard uses a cloud-hosted backend for image inference. Availability may depend on the deployment status and model initialization.
 
+## 🎯 Project Objectives
 
+- Apply computer vision to agricultural image analysis.
+- Detect potential crop diseases using trained YOLO models.
+- Evaluate image quality using OpenCV.
+- Provide structured inference results and confidence scores.
+- Support agricultural monitoring through a web dashboard and API.
 
-Farmaxpert is a smart farming assistant that combines crop-leaf image inference, OpenCV image-quality checks, sensor-based risk assessment, and a web dashboard.
+## 🧠 Key Features
 
+### 1. AI-Based Crop Analysis
+Processes submitted crop images and returns prediction results when the required model and inference pipeline are available.
 
+### 2. Multi-Crop Model Support
+The backend includes trained YOLO models for:
+- **Tomato:** Disease and plant-health categories.
+- **Maize:** Disease and pest-related categories.
 
-The deployment package includes:
+Predictions depend on the capabilities and training data of the selected model.
 
-\- Tomato and maize YOLO models
+### 3. OpenCV Image-Quality Analysis
+The image-processing pipeline includes:
+- Image dimension extraction.
+- Brightness measurement.
+- Laplacian-based sharpness assessment.
+- Image-quality warnings.
 
-\- FastAPI inference backend
+These measurements help assess whether an uploaded image may be suitable for analysis.
 
-\- Web dashboard and camera page
+### 4. Structured AI Results
+The inference API is designed to return information such as:
+- Selected crop and model.
+- Predicted disease or health category.
+- Confidence score.
+- Detected objects, where supported.
+- Image-quality metrics.
+- Risk assessment and recommendations.
 
-\- Python dependency lists
+### 5. Web Dashboard
+A browser-based interface for accessing FarmXpert's agricultural monitoring and image-analysis functionality.
 
+## 🛠️ Technology Stack
 
+- **Computer Vision:** OpenCV
+- **Object Detection:** Ultralytics YOLO
+- **Deep Learning:** PyTorch
+- **Image Processing:** Pillow and NumPy
+- **API Framework:** FastAPI
+- **API Gateway Adapter:** Mangum
+- **Backend Deployment:** AWS Lambda container image
+- **Container Registry and Build:** Amazon ECR and AWS CodeBuild
+- **Dashboard Hosting:** Amazon CloudFront
+- **Plant Image Validation:** Hugging Face Transformers
 
-\## 2. Requirements
+## 🏗️ System Architecture
 
+1. The user opens the FarmXpert dashboard.
+2. The user selects a crop and uploads an image.
+3. The dashboard sends the image to the FastAPI inference endpoint.
+4. The backend validates and processes the image.
+5. OpenCV calculates image-quality measurements.
+6. The appropriate trained model performs inference.
+7. The API returns structured results for the dashboard to display.
 
+## 🧪 Testing Instructions for Judges
 
-\- Python 3.11 recommended
+### Test 1 — Backend Health Check
+Open the backend health endpoint:
 
-\- Internet access for initial dependency installation
+https://zarfg6ldbqtjfhoffjiqddvxcm0mwuka.lambda-url.ap-southeast-2.on.aws/api/v1/health
 
-\- Sufficient disk space and RAM for the AI libraries and models
+A successful response should return a healthy service status and backend information.
 
-\- A modern browser and camera permission for camera testing
+### Test 2 — Dashboard Access
+Open:
 
+https://d1p1tenqj0s2gy.cloudfront.net
 
+Confirm that the dashboard loads and its interface is accessible.
 
-A compatible GPU is optional; CPU inference may be slower.
+### Test 3 — Tomato Image Analysis
+1. Open the dashboard.
+2. Select the tomato crop option.
+3. Upload a clear tomato leaf image.
+4. Start AI inference.
+5. Observe the returned prediction, confidence score, image-quality information, and recommendation fields where available.
 
+### Test 4 — Maize Image Analysis
+1. Select the maize crop option, if available.
+2. Upload a clear maize leaf image.
+3. Run inference.
+4. Observe the prediction and returned analysis fields.
 
+### Test 5 — Image Quality
+Try images with different lighting, focus, and image dimensions. Compare the reported brightness, sharpness, and quality warnings where available.
 
-\## 3. Windows Setup
+### Test 6 — Error Handling
+Test an unsupported image or invalid request, if the interface permits. Verify that the application responds appropriately rather than displaying misleading results.
 
+**Testing note:** Model predictions are estimates, not guaranteed diagnoses. Results should be validated by an agricultural expert before treatment decisions are made.
 
+## 💻 Local Development
 
-Open PowerShell in the project folder:
+The backend source is designed to run with Python 3.11 and the dependencies listed in `requirements.txt`.
 
-
-
-```powershell
-
-cd D:\\PROJECTS\\FARMAXPERT\_DEPLOY
-
-
-
-python -m venv .venv
-
-.\\.venv\\Scripts\\Activate.ps1
-
-
-
-python -m pip install --upgrade pip
-
-pip install -r requirements.txt
-
-```
-
-
-
-If PowerShell blocks activation, use Command Prompt or run the virtual environment's Python directly.
-
-
-
-\## 4. Start the Backend and Dashboard
-
-
-
-From the project folder, run:
-
-
-
-```powershell
-
-python edge\_ai\_server.py
-
-```
-
-
-
-Keep the terminal open while using Farmaxpert.
-
-
-
-Open these URLs in your browser:
-
-
-
-\- Dashboard: http://localhost:8000/
-
-\- Health check: http://localhost:8000/api/v1/health
-
-
-
-The health endpoint should return a healthy status.
-
-
-
-\## 5. Test Crop Inference
-
-
-
-1\. Open the dashboard.
-
-2\. Navigate to the crop detection or camera page.
-
-3\. Select the correct crop.
-
-4\. Upload a clear leaf image or test the camera.
-
-5\. Review the prediction, confidence, risk information, and recommendations.
-
-
-
-Use separate, correctly labelled tomato and maize images when validating each model. A successful API response alone does not prove prediction accuracy.
-
-
-
-\## 6. Sensor Endpoint
-
-
-
-Use the dashboard or the documented API endpoint to submit sensor readings.
-
-
-
-Sensor risk outputs may use programmed rules. Do not interpret them as validated agricultural diagnoses unless they have been tested against real field data.
-
-
-
-\## 7. API URL Configuration
-
-
-
-The dashboard may use the browser's local hostname and port 8000 by default.
-
-
-
-If the backend runs on another computer or port, configure the dashboard's API base URL to the reachable backend address, including `/api/v1`.
-
-
-
-Do not expose the backend publicly without appropriate authentication, network restrictions, and security review.
-
-
-
-\## 8. Linux Setup
-
-
-
-Install Python 3.11 and the operating-system packages needed by Python, OpenCV, and PyTorch.
-
-
-
-Then, from the project directory:
-
-
+A typical local setup, when the complete backend source and required model files are available:
 
 ```bash
-
-python3 -m venv .venv
-
-source .venv/bin/activate
-
-
-
-python -m pip install --upgrade pip
-
-pip install -r requirements.txt
-
-
-
-uvicorn edge\_ai\_server:app --host 0.0.0.0 --port 8000
-
+python -m venv .venv
 ```
 
+Activate the virtual environment, then install dependencies:
 
+```bash
+pip install -r requirements.txt
+```
 
-Open `http://localhost:8000/` on the same machine.
+Start the FastAPI development server:
 
+```bash
+python edge_ai_server.py
+```
 
+The expected local address is:
 
-For access from another device, use the server's reachable LAN address and configure the dashboard API URL accordingly. Only allow trusted devices to connect.
+```text
+http://localhost:8000
+```
 
+The exact startup procedure depends on the supplied source files, model paths, and environment configuration.
 
+## ☁️ Deployment
 
-\## 9. Troubleshooting
+The cloud deployment uses an AWS Lambda container image. The backend requires compatible Python dependencies, native libraries, trained model files, and writable cache locations.
 
+The dashboard is hosted separately from the inference backend. Browser-to-API communication requires correct CORS configuration.
 
+## 📁 Repository Contents
 
-\*\*Backend does not start\*\*
+The competition repository should contain the source files, dependency manifests, Docker configuration, setup instructions, and other project assets approved for redistribution.
 
-\- Activate the correct virtual environment.
+Trained model weights should be included only when their licenses and file-size constraints permit it.
 
-\- Install dependencies from `requirements.txt`.
+## 🔐 Security
 
-\- Check the terminal for the first Python error.
+- Never commit AWS credentials, API keys, passwords, or private environment files.
+- Store deployment secrets outside source control.
+- Review model licenses and third-party dependencies before redistribution.
 
+## ⚠️ Limitations
 
+- Predictions depend on image quality, model training, and the supported crop categories.
+- Poor lighting, blur, occlusion, or unfamiliar diseases may reduce prediction reliability.
+- Cloud inference may be affected by cold starts, memory limits, request timeouts, or deployment availability.
+- The system is intended as a decision-support tool and does not replace expert agricultural diagnosis.
 
-\*\*Model file not found\*\*
+## 🔭 Future Improvements
 
-\- Confirm these files exist:
+- Expand supported crops and disease categories.
+- Improve model evaluation across field conditions.
+- Add more comprehensive image-quality feedback.
+- Improve inference latency and deployment reliability.
+- Expand testing with independently collected agricultural images.
 
-&#x20; - `models/tomato\_best.pt`
+## 🏆 Competition Submission
 
-&#x20; - `models/maize\_best.pt`
+**Project:** FarmXpert — AI-Powered Agronomy & Crop Health Analysis
 
+**Focus:** OpenCV-based image processing, deep-learning inference, and agricultural decision support.
 
+**Live Dashboard:** https://d1p1tenqj0s2gy.cloudfront.net
 
-\*\*Dashboard loads but inference fails\*\*
-
-\- Check that the backend is running.
-
-\- Open the health endpoint.
-
-\- Verify the configured API URL and browser console errors.
-
-
-
-\*\*Camera does not open\*\*
-
-\- Allow browser camera permission.
-
-\- Use localhost or a secure HTTPS page where required by the browser.
-
-\- Confirm the camera page points to the correct backend URL.
-
-
-
-\*\*Predictions appear inaccurate\*\*
-
-\- Test with clear, well-lit images of the correct crop.
-
-\- Review confidence and image-quality results.
-
-\- Validate against labelled images before using predictions for farm decisions.
-
-
-
-\## 10. Deployment Checklist
-
-
-
-\- \[ ] Health endpoint responds successfully
-
-\- \[ ] Dashboard loads
-
-\- \[ ] Tomato inference tested with tomato images
-
-\- \[ ] Maize inference tested with maize images
-
-\- \[ ] Camera and upload workflows tested
-
-\- \[ ] Model files and dependency lists included in the package
-
-\- \[ ] ZIP refreshed after final changes
-
-\- \[ ] No secrets or private credentials included
-
-\- \[ ] Risk outputs and recommendations validated before real-world use
-
-
-
-\## Important
-
-
-
-This guide describes local testing. It does not claim that Farmaxpert has been deployed to a public production server or independently validated for agricultural decision-making.
-
-
-
+**Backend Health:** https://zarfg6ldbqtjfhoffjiqddvxcm0mwuka.lambda-url.ap-southeast-2.on.aws/api/v1/health
