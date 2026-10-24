@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FarmXpert – Smart Farming Dashboard</title>
+  <meta name="description" content="AI-powered precision agriculture dashboard for real-time farm intelligence, disease detection, soil telemetry, and precision irrigation." />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+  <div class="app-container">
+    <!-- ====================================================================
+         1. Left Sidebar Navigation
+         ==================================================================== -->
+    <aside class="sidebar" id="appSidebar">
+      <!-- Sidebar Header -->
+      <div class="sidebar-header">
+        <div class="brand-logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+            <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <h1>FarmXpert</h1>
+          <span class="brand-subtitle">Smart Farming Dashboard</span>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="sidebar-nav">
+        <a href="#overview" class="nav-item active" data-page="overview" id="navOverview">
+          <span class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+              <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+              <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+              <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+            </svg>
+          </span>
+          <span>Overview</span>
+        </a>
+
+        <a href="#fields" class="nav-item" data-page="fields" id="navFields">
+          <span class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
+              <line x1="8" y1="2" x2="8" y2="18"/>
+              <line x1="16" y1="6" x2="16" y2="22"/>
+            </svg>
+          </span>
+          <span>Field & Zones</span>
+        </a>
+
+        <a href="#irrigation" class="nav-item" data-page="irrigation" id="navIrrigation">
+          <span class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+            </svg>
+          </span>
+          <span>Irrigation</span>
+        </a>
+
+        <a href="#plant-health" class="nav-item" data-page="plant-health" id="navPlantHealth">
+          <span class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 20h10"/>
+              <path d="M10 20c0-4 1-6 2-10"/>
+              <path d="M12 10c1.5-2 4-2.5 6-1 0 3-1.5 5.5-3.5 6.5"/>
+              <path d="M12 14c-2-1-3.5-3-3.5-5 2-1.5 4.5-1 6 1"/>
+            </svg>
+          </span>
+          <span>Plant Health</span>
+        </a>
+
+        <a href="#nutrition" class="nav-item" data-page="nutrition" id="navNutrition">
+          <span class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="m4.93 4.93 4.24 4.24"/>
+              <path d="m14.83 9.17 4.24-4.24"/>
+              <path d="m14.83 14.83 4.24 4.24"/>
+              <path d="m9.17 14.83-4.24 4.24"/>
+            </svg>
+          </span>
+          <span>Nutrition</span>
+        </a>
+
+        <a href="#disease" class="nav-item" data-page="disease" id="navDisease">
+          <span class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="m9 12 2 2 4-4"/>
+              <path d="M12 3v2"/>
+              <path d="M12 19v2"/>
+              <path d="M3 12h2"/>
+              <path d="M19 12h2"/>
+            </svg>
+          </span>
+          <span>Disease Detection</span>
+        </a>
+
+        <a href="#soil" class="nav-item" data-page="soil" id="navSoil">
+          <span class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M2 12h20"/>
+              <path d="M20 12v8H4v-8"/>
+              <path d="M4 17h16"/>
+              <path d="M4 8l8-5 8 5"/>
+            </svg>
+          </span>
+          <span>Soil & Environment</span>
+        </a>
+
+        <a href="#alerts" class="nav-item" data-page="alerts" id="navAlerts">
+          <span class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+          </span>
+          <span>Alerts</span>
+        </a>
+
+        <a href="#recommendations" class="nav-item" data-page="recommendations" id="navRecommendations">
+          <span class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>
+            </svg>
+          </span>
+          <span>Recommendations</span>
+        </a>
+
+        <a href="#reports" class="nav-item" data-page="reports" id="navReports">
+          <span class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="20" x2="18" y2="10"/>
+              <line x1="12" y1="20" x2="12" y2="4"/>
+              <line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+          </span>
+          <span>Reports & Trends</span>
+        </a>
+
+        <a href="#settings" class="nav-item" data-page="settings" id="navSettings" onclick="modalManager.openApiConfigModal()">
+          <span class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </span>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <!-- Sidebar Bottom Farm Selector -->
+      <div class="sidebar-footer">
+        <div class="farm-selector-card" id="farmSelectorCard" onclick="modalManager.openFarmSwitcherModal()">
+          <div class="farm-selector-header">
+            <span class="farm-label">Farm</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-muted);">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+          <div class="farm-name">Green Valley Farm</div>
+          <div class="farm-details">
+            <div class="farm-detail-row">
+              <span>Total Area</span>
+              <span>12.5 Acres</span>
+            </div>
+            <div class="farm-detail-row">
+              <span>Crops</span>
+              <span>Tomato, Chilli, Brinjal</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ====================================================================
+         2. Main Application Wrapper
+         ==================================================================== -->
+    <div class="main-wrapper">
+      <!-- Top Header -->
+      <header class="top-header">
+        <div class="header-left">
+          <button class="menu-toggle-btn" id="mobileMenuToggle" aria-label="Toggle Navigation Menu">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"/>
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          </button>
+          <div class="welcome-info">
+            <h2>Welcome back, Arjun 👋</h2>
+            <p>Here’s what’s happening in your farm today.</p>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <!-- Weather Widget -->
+          <div class="weather-widget">
+            <span class="weather-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="4"/>
+                <path d="M12 2v2"/>
+                <path d="M12 20v2"/>
+                <path d="m4.93 4.93 1.41 1.41"/>
+                <path d="m17.66 17.66 1.41 1.41"/>
+                <path d="M2 12h2"/>
+                <path d="M20 12h2"/>
+                <path d="m6.34 17.66-1.41 1.41"/>
+                <path d="m19.07 4.93-1.41 1.41"/>
+              </svg>
+            </span>
+            <span class="weather-temp">32°C</span>
+            <span class="weather-desc">Partly Cloudy</span>
+          </div>
+
+          <!-- Download Project ZIP Button -->
+          <a href="farmxpert-dashboard.zip" download="farmxpert-dashboard.zip" class="btn btn-outline btn-sm" id="downloadZipBtn" title="Download entire project as ZIP" style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3); color: #34d399;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            <span>Download ZIP</span>
+          </a>
+
+          <!-- Live Edge-AI Connection Pill -->
+          <div class="live-edge-badge" id="edgeApiBadge" title="Click to configure Edge-AI endpoint">
+            <span class="pulse-dot"></span>
+            <span>Edge-AI Stream</span>
+          </div>
+
+          <!-- Refresh Data Button -->
+          <button class="icon-btn" id="refreshBtn" title="Sync live telemetry">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+            </svg>
+          </button>
+
+          <!-- Notification Bell -->
+          <button class="icon-btn" id="notifBellBtn" title="Farm Risk Notifications">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+            <span class="notif-badge"></span>
+          </button>
+
+          <!-- Farmer Profile Avatar & Dropdown -->
+          <div class="profile-card" id="userProfileCard">
+            <div class="profile-avatar">A</div>
+            <div class="profile-text">
+              <span class="profile-name">Arjun</span>
+              <span class="profile-role">Farmer</span>
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-muted); margin-left:4px;">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Dashboard Content -->
+      <main class="main-content">
+        <!-- Live Connection Notice Banner -->
+        <div class="status-banner" id="statusBanner">
+          <div class="status-banner-content">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <span id="statusBannerText">Edge-AI connection unavailable — displaying latest available data.</span>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="modalManager.openApiConfigModal()">Configure Backend</button>
+        </div>
+
+        <!-- ====================================================================
+             3. TOP PRIORITY DECISION CARDS (The Big Three)
+             ==================================================================== -->
+        <section class="priority-cards-grid">
+          <!-- Card 1: Plant Nutrition Status -->
+          <div class="priority-card card-nutrition">
+            <div class="priority-card-header">
+              <div class="priority-card-title-group">
+                <div class="priority-card-icon icon-nutrition">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+                  </svg>
+                </div>
+                <span class="priority-card-title">Plant Nutrition Status</span>
+              </div>
+              <span class="badge badge-warning" id="nutStatusBadge">MODERATE</span>
+            </div>
+
+            <div class="priority-card-body">
+              <div class="priority-headline" id="nutHeadline">Nitrogen Deficient</div>
+              <div class="priority-subtext">
+                <span>N Deficiency detected in</span>
+                <span class="zone-highlight" id="nutZones">Zone 2, Zone 4</span>
+              </div>
+            </div>
+
+            <div class="priority-card-footer">
+              <button class="btn-link-action" onclick="modalManager.openNutritionModal()">
+                <span>View Details</span>
+                <span>➔</span>
+              </button>
+              <span style="font-size:11px; color:var(--text-muted);">Chlorosis detected</span>
+            </div>
+          </div>
+
+          <!-- Card 2: Disease Detection & Risk -->
+          <div class="priority-card card-disease">
+            <div class="priority-card-header">
+              <div class="priority-card-title-group">
+                <div class="priority-card-icon icon-disease">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+                    <line x1="12" y1="9" x2="12" y2="13"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                  </svg>
+                </div>
+                <span class="priority-card-title">Disease Detection & Risk</span>
+              </div>
+              <span class="badge badge-danger" id="disStatusBadge">HIGH RISK</span>
+            </div>
+
+            <div class="priority-card-body">
+              <div id="liveCameraPanel" style="margin-bottom:16px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;">
+                  <strong style="font-size:13px;">📷 Live Field Camera</strong>
+                  <span id="cameraStatus" class="badge badge-warning">Camera Off</span>
+                </div>
+                <div style="position:relative;background:#07130d;border-radius:12px;overflow:hidden;min-height:190px;display:flex;align-items:center;justify-content:center;">
+                  <video id="cameraFeed" autoplay playsinline muted style="width:100%;display:none;max-height:280px;object-fit:cover;"></video>
+                  <div id="cameraPlaceholder" style="padding:34px 15px;text-align:center;color:var(--text-muted);font-size:12px;">📱 Open this dashboard on your phone and start the camera.</div>
+                </div>
+                <canvas id="cameraCanvas" style="display:none;"></canvas>
+                <div style="display:flex;gap:8px;margin-top:10px;">
+                  <button id="startCameraBtn" class="btn btn-primary btn-sm" type="button">📷 Start Camera</button>
+                  <button id="stopCameraBtn" class="btn btn-outline btn-sm" type="button" disabled>⏹ Stop</button>
+                </div>
+                <div id="cameraDetectionResult" style="margin-top:10px;padding:10px;border-radius:9px;background:rgba(16,185,129,.08);font-size:12px;">Waiting for live detection…</div>
+
+              <!-- Upload a leaf image for real backend inference -->
+              <div id="farmaxpertUploadPanel" style="margin-top:16px;padding:14px;border:1px solid rgba(16,185,129,.25);border-radius:12px;background:rgba(16,185,129,.045);">
+                <div style="font-weight:700;font-size:13px;margin-bottom:10px;">🌿 Upload Leaf Image for AI Analysis</div>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+                  <label for="farmaxpertCropSelect" style="font-size:12px;color:var(--text-muted);">Crop</label>
+                  <select id="farmaxpertCropSelect" style="padding:8px 10px;border-radius:8px;border:1px solid var(--border-color, #355);background:var(--card-bg, #102018);color:var(--text-primary, #fff);">
+                    <option value="tomato">Tomato</option>
+                    <option value="maize">Maize</option>
+                  </select>
+                  <input id="farmaxpertLeafFile" type="file" accept="image/png,image/jpeg,image/webp" style="display:none;" />
+                  <button id="farmaxpertChooseLeafBtn" class="btn btn-outline btn-sm" type="button">Choose Image</button>
+                  <button id="farmaxpertAnalyzeLeafBtn" class="btn btn-primary btn-sm" type="button" disabled>Analyze Image</button>
+                </div>
+                <div id="farmaxpertUploadPreviewWrap" style="display:none;margin-top:12px;">
+                  <img id="farmaxpertUploadPreview" alt="Selected leaf preview" style="display:block;max-width:100%;max-height:240px;object-fit:contain;border-radius:10px;border:1px solid rgba(16,185,129,.25);" />
+                  <div id="farmaxpertSelectedFileName" style="font-size:11px;color:var(--text-muted);margin-top:6px;overflow-wrap:anywhere;"></div>
+                </div>
+                <div id="farmaxpertUploadStatus" role="status" aria-live="polite" style="margin-top:10px;padding:10px;border-radius:8px;background:rgba(16,185,129,.08);font-size:12px;">Choose a tomato or maize leaf image to begin.</div>
+                <div id="farmaxpertUploadRecommendation" style="display:none;margin-top:8px;font-size:12px;line-height:1.5;"></div>
+                <div id="farmaxpertOpenCVQuality" style="display:none;margin-top:10px;padding:12px;border:1px solid rgba(16,185,129,.3);border-radius:10px;background:rgba(16,185,129,.08);font-size:12px;line-height:1.7;">
+                  <strong>🔍 OpenCV Image Quality Analysis</strong>
+                  <div id="farmaxpertOpenCVMessage" style="margin-top:6px;">
+                    Waiting for image analysis...
+                  </div>
+                  <div id="farmaxpertOpenCVMetrics" style="margin-top:6px;color:var(--text-muted);"></div>
+                </div>
+
+              </div>
+
+              </div>
+
+              <div class="priority-headline" id="disHeadline">Leaf Blight Detected</div>
+              <div class="severity-container">
+                <div class="severity-label-row">
+                  <span>Severity Index</span>
+                  <span id="disSeverityVal">72%</span>
+                </div>
+                <div class="severity-progress-bar">
+                  <div class="severity-progress-fill" id="disSeverityBar" style="width: 72%;"></div>
+                </div>
+              </div>
+              <div class="priority-subtext" style="margin-top:4px;">
+                <span>Affected Zones:</span>
+                <span class="zone-highlight" id="disZones">Zone 2, Zone 4</span>
+              </div>
+            </div>
+
+            <div class="priority-card-footer">
+              <button class="btn-link-action action-danger" onclick="modalManager.openDiseaseModal()">
+                <span>View Details</span>
+                <span>➔</span>
+              </button>
+              <span style="font-size:11px; color:#f87171; font-weight:600;">Immediate Spray Req.</span>
+            </div>
+          </div>
+
+          <!-- Card 3: Irrigation Recommendation -->
+          <div class="priority-card card-irrigation">
+            <div class="priority-card-header">
+              <div class="priority-card-title-group">
+                <div class="priority-card-icon icon-irrigation">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+                  </svg>
+                </div>
+                <span class="priority-card-title">Irrigation Recommendation</span>
+              </div>
+              <span class="badge badge-water" id="irgStatusBadge">IRRIGATION REQUIRED</span>
+            </div>
+
+            <div class="priority-card-body">
+              <div class="priority-headline" id="irgHeadline">Zone 2, Zone 4</div>
+              <div class="priority-meta-grid">
+                <div class="priority-meta-item">
+                  <span class="priority-meta-label">Next Irrigation</span>
+                  <span class="priority-meta-val" id="irgNext">Today Evening</span>
+                </div>
+                <div class="priority-meta-item">
+                  <span class="priority-meta-label">Water Need</span>
+                  <span class="priority-meta-val" id="irgNeed" style="color:#38bdf8;">18 mm</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="priority-card-footer">
+              <button class="btn-link-action action-water" onclick="modalManager.openIrrigationModal()">
+                <span>View Details</span>
+                <span>➔</span>
+              </button>
+              <span style="font-size:11px; color:var(--text-muted);">Drip Valve Ready</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================================
+             4. MIDDLE SECTION: Field Map & Real-Time Telemetry
+             ==================================================================== -->
+        <section class="middle-dashboard-grid">
+          <!-- Left: Field & Zone Status Card -->
+          <div class="card-base field-map-card">
+            <div class="card-header-flex">
+              <div class="card-title-main">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--primary);">
+                  <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
+                  <line x1="8" y1="2" x2="8" y2="18"/>
+                  <line x1="16" y1="6" x2="16" y2="22"/>
+                </svg>
+                <span>Field & Zone Status</span>
+              </div>
+              <div style="display:flex; gap:8px;">
+                <button class="btn btn-outline btn-sm" id="toggleNdviBtn">🛰️ NDVI View</button>
+                <button class="btn btn-primary btn-sm" onclick="modalManager.showToast('High-resolution drone ortho-mosaic loaded', 'info')">View Map</button>
+              </div>
+            </div>
+
+            <div class="field-map-container">
+              <div class="field-map-toolbar">
+                <div class="map-legends">
+                  <div class="legend-item">
+                    <span class="legend-swatch swatch-healthy"></span>
+                    <span>Healthy (Zone 1, 3)</span>
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-swatch swatch-attention"></span>
+                    <span>Attention (Zone 4)</span>
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-swatch swatch-risk"></span>
+                    <span>High Risk (Zone 2)</span>
+                  </div>
+                </div>
+                <span style="font-size:11px; color:var(--text-muted);">Click any zone to inspect deep telemetry</span>
+              </div>
+
+              <!-- Interactive 4-Zone Field Visual Canvas -->
+              <div class="map-visual-canvas-wrapper" id="zoneMapCanvas">
+                <!-- Populated dynamically by zoneMap.js -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Sensor Telemetry & Health Gauge Stack -->
+          <div class="telemetry-stack">
+            <!-- Environmental Conditions -->
+            <div class="card-base">
+              <div class="card-header-flex" style="margin-bottom:12px;">
+                <h3 class="card-title-main" style="font-size:14px;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#fbbf24;">
+                    <circle cx="12" cy="12" r="5"/>
+                    <line x1="12" y1="1" x2="12" y2="3"/>
+                    <line x1="12" y1="21" x2="12" y2="23"/>
+                  </svg>
+                  <span>Environmental Conditions</span>
+                </h3>
+                <span class="badge badge-healthy" style="font-size:9px;">Live Sensors</span>
+              </div>
+
+              <div class="sensor-grid-2x2">
+                <div class="sensor-metric-card">
+                  <div class="sensor-icon-box icon-temp">🌡️</div>
+                  <div class="sensor-metric-info">
+                    <span class="sensor-metric-label">Temperature</span>
+                    <span class="sensor-metric-value" id="envTemp">32.5°C</span>
+                  </div>
+                </div>
+
+                <div class="sensor-metric-card">
+                  <div class="sensor-icon-box icon-hum">💧</div>
+                  <div class="sensor-metric-info">
+                    <span class="sensor-metric-label">Humidity</span>
+                    <span class="sensor-metric-value" id="envHum">78%</span>
+                  </div>
+                </div>
+
+                <div class="sensor-metric-card">
+                  <div class="sensor-icon-box icon-light">☀️</div>
+                  <div class="sensor-metric-info">
+                    <span class="sensor-metric-label">Light Intensity</span>
+                    <span class="sensor-metric-value" id="envLight">650 lux</span>
+                  </div>
+                </div>
+
+                <div class="sensor-metric-card">
+                  <div class="sensor-icon-box icon-wind">💨</div>
+                  <div class="sensor-metric-info">
+                    <span class="sensor-metric-label">Wind Speed</span>
+                    <span class="sensor-metric-value" id="envWind">12 km/h</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Soil Condition -->
+            <div class="card-base">
+              <div class="card-header-flex" style="margin-bottom:12px;">
+                <h3 class="card-title-main" style="font-size:14px;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--primary);">
+                    <path d="M2 12h20"/>
+                    <path d="M20 12v8H4v-8"/>
+                  </svg>
+                  <span>Soil Condition</span>
+                </h3>
+                <span class="badge badge-water" style="font-size:9px;">Root Zone</span>
+              </div>
+
+              <div class="sensor-grid-2x2">
+                <div class="sensor-metric-card">
+                  <div class="sensor-icon-box icon-moist">🌊</div>
+                  <div class="sensor-metric-info">
+                    <span class="sensor-metric-label">Soil Moisture</span>
+                    <span class="sensor-metric-value" id="soilMoist">32%</span>
+                  </div>
+                </div>
+
+                <div class="sensor-metric-card">
+                  <div class="sensor-icon-box icon-ph">🧪</div>
+                  <div class="sensor-metric-info">
+                    <span class="sensor-metric-label">Soil pH</span>
+                    <span class="sensor-metric-value" id="soilPh">6.8 pH</span>
+                  </div>
+                </div>
+
+                <div class="sensor-metric-card">
+                  <div class="sensor-icon-box icon-ec">⚡</div>
+                  <div class="sensor-metric-info">
+                    <span class="sensor-metric-label">Conductivity (EC)</span>
+                    <span class="sensor-metric-value" id="soilEc">1.2 dS/m</span>
+                  </div>
+                </div>
+
+                <div class="sensor-metric-card">
+                  <div class="sensor-icon-box icon-soilhealth">🌱</div>
+                  <div class="sensor-metric-info">
+                    <span class="sensor-metric-label">Soil Health</span>
+                    <span class="sensor-metric-value" id="soilHealth" style="color:#34d399;">Good</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Crop / Plant Health Score -->
+            <div class="card-base">
+              <div class="card-header-flex" style="margin-bottom:12px;">
+                <h3 class="card-title-main" style="font-size:14px;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--primary);">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 6v6l4 2"/>
+                  </svg>
+                  <span>Crop / Plant Health Score</span>
+                </h3>
+                <button class="btn-link-action" style="font-size:11px;" onclick="modalManager.openNutritionModal()">Analysis ➔</button>
+              </div>
+
+              <div class="gauge-wrapper">
+                <div class="gauge-canvas-container" id="gaugeCanvasContainer">
+                  <!-- SVG Gauge rendered by gauge.js -->
+                </div>
+                <div class="gauge-breakdown-list" id="gaugeBreakdownContainer">
+                  <!-- Sub-metrics rendered by gauge.js -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================================
+             5. ALERTS & AI RECOMMENDED ACTIONS
+             ==================================================================== -->
+        <section class="alerts-recs-grid">
+          <!-- Early Risk / Threat Alerts -->
+          <div class="card-base">
+            <div class="card-header-flex">
+              <div class="card-title-main">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#ef4444;">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                </svg>
+                <span>Early Risk / Threat Alerts</span>
+              </div>
+              <button class="btn btn-outline btn-sm" onclick="modalManager.openAllAlertsModal()">View All</button>
+            </div>
+
+            <div class="alerts-list">
+              <!-- Alert 1 -->
+              <div class="alert-item alert-danger" onclick="modalManager.openDiseaseModal()" style="cursor:pointer;">
+                <div class="alert-item-icon">⚠️</div>
+                <div class="alert-item-content">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div class="alert-item-title">High Disease Risk in Zone 2</div>
+                    <span class="badge badge-danger">High Risk</span>
+                  </div>
+                  <div class="alert-item-desc">“Leaf Blight is spreading. Immediate action required.”</div>
+                </div>
+              </div>
+
+              <!-- Alert 2 -->
+              <div class="alert-item alert-warning" onclick="modalManager.openIrrigationModal()" style="cursor:pointer;">
+                <div class="alert-item-icon">💧</div>
+                <div class="alert-item-content">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div class="alert-item-title">Soil Moisture Low in Zone 4</div>
+                    <span class="badge badge-warning">Attention</span>
+                  </div>
+                  <div class="alert-item-desc">“Soil moisture dropped below optimal level.”</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI Recommended Actions -->
+          <div class="card-base">
+            <div class="card-header-flex">
+              <div class="card-title-main">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--primary);">
+                  <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>
+                </svg>
+                <span>AI Recommended Actions</span>
+              </div>
+              <button class="btn btn-outline btn-sm" onclick="modalManager.openAllRecsModal()">View All Recommendations</button>
+            </div>
+
+            <div class="recs-list">
+              <div class="rec-item">
+                <div class="rec-left">
+                  <div class="rec-num">1</div>
+                  <div class="rec-text">“Irrigate Zone 2 and Zone 4 today evening.”</div>
+                </div>
+                <button class="rec-action-btn" onclick="modalManager.openIrrigationModal()">Schedule</button>
+              </div>
+
+              <div class="rec-item">
+                <div class="rec-left">
+                  <div class="rec-num">2</div>
+                  <div class="rec-text">“Apply nitrogen fertilizer in Zone 2.”</div>
+                </div>
+                <button class="rec-action-btn" onclick="modalManager.openNutritionModal()">Fertigate</button>
+              </div>
+
+              <div class="rec-item">
+                <div class="rec-left">
+                  <div class="rec-num">3</div>
+                  <div class="rec-text">“Inspect plants in Zone 2 for Leaf Blight.”</div>
+                </div>
+                <button class="rec-action-btn" onclick="modalManager.openDiseaseModal()">Inspect</button>
+              </div>
+
+              <div class="rec-item">
+                <div class="rec-left">
+                  <div class="rec-num">4</div>
+                  <div class="rec-text">“Maintain soil moisture between 30% – 60%.”</div>
+                </div>
+                <button class="rec-action-btn" onclick="modalManager.showToast('Automated moisture regulation enabled', 'success')">Enable Auto</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================================
+             6. HISTORICAL FARM HEALTH TREND CHART
+             ==================================================================== -->
+        <section class="card-base trend-card-wrapper">
+          <div class="card-header-flex">
+            <div class="card-title-main">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--primary);">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+              <span>Farm Health Trend</span>
+            </div>
+
+            <div class="time-filter-group">
+              <button class="time-filter-btn" data-range="24hours">24 Hours</button>
+              <button class="time-filter-btn active" data-range="7days">7 Days</button>
+              <button class="time-filter-btn" data-range="30days">30 Days</button>
+            </div>
+          </div>
+
+          <!-- Trend Chart Canvas Container -->
+          <div class="trend-canvas-container" id="trendChartContainer">
+            <!-- Rendered by charts.js -->
+          </div>
+
+          <!-- Chart Legends -->
+          <div class="chart-legends-bar">
+            <div class="chart-legend-item">
+              <span class="chart-line-indicator indicator-health"></span>
+              <span>Overall Health</span>
+            </div>
+            <div class="chart-legend-item">
+              <span class="chart-line-indicator indicator-disease"></span>
+              <span>Disease Risk</span>
+            </div>
+            <div class="chart-legend-item">
+              <span class="chart-line-indicator indicator-moisture"></span>
+              <span>Soil Moisture</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================================
+             7. QUICK SUMMARY (Bottom 5 Cards)
+             ==================================================================== -->
+        <section style="margin-top: 10px;">
+          <div class="card-header-flex" style="margin-bottom: 14px;">
+            <h3 class="card-title-main" style="font-size:16px;">Quick Summary</h3>
+            <span style="font-size:11px; color:var(--text-muted);">Aggregate farm metrics today</span>
+          </div>
+
+          <div class="quick-summary-grid">
+            <!-- 1. Total Plants -->
+            <div class="summary-card">
+              <div class="summary-icon-box summary-total">🌱</div>
+              <div class="summary-info">
+                <span class="summary-label">Total Plants</span>
+                <span class="summary-val" id="sumTotalPlants">5,420</span>
+              </div>
+            </div>
+
+            <!-- 2. Healthy Plants -->
+            <div class="summary-card">
+              <div class="summary-icon-box summary-healthy">🛡️</div>
+              <div class="summary-info">
+                <span class="summary-label">Healthy Plants</span>
+                <span class="summary-val" id="sumHealthyPlants" style="color:#34d399;">76%</span>
+              </div>
+            </div>
+
+            <!-- 3. Diseased Plants -->
+            <div class="summary-card">
+              <div class="summary-icon-box summary-diseased">⚠️</div>
+              <div class="summary-info">
+                <span class="summary-label">Diseased Plants</span>
+                <span class="summary-val" id="sumDiseasedPlants" style="color:#f87171;">12%</span>
+              </div>
+            </div>
+
+            <!-- 4. Water Used Today -->
+            <div class="summary-card">
+              <div class="summary-icon-box summary-water">💧</div>
+              <div class="summary-info">
+                <span class="summary-label">Water Used Today</span>
+                <span class="summary-val" id="sumWaterUsed" style="color:#38bdf8;">1,250 L</span>
+              </div>
+            </div>
+
+            <!-- 5. Estimated Yield (Purple) -->
+            <div class="summary-card" style="border-color: rgba(168, 85, 247, 0.2);">
+              <div class="summary-icon-box summary-yield">🍇</div>
+              <div class="summary-info">
+                <span class="summary-label">Estimated Yield</span>
+                <span class="summary-val" id="sumYield" style="color:#c084fc;">2.8 Tons/acre</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Global Modal Overlay -->
+  <div class="modal-overlay" id="globalModalOverlay">
+    <div class="modal-container" id="globalModalContainer">
+      <!-- Injected by modals.js -->
+    </div>
+  </div>
+
+  <!-- Toast Notification Root -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Application Scripts -->
+  <script src="js/mockData.js"></script>
+  <script src="js/apiService.js"></script>
+  <script src="js/zoneMap.js"></script>
+  <script src="js/gauge.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/modals.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

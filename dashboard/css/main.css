@@ -1,0 +1,326 @@
+/* FarmXpert - Modern Dark Theme Precision Agriculture Design System */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* Surface & Background Colors */
+  --bg-app: #080c10;
+  --bg-sidebar: #0d1218;
+  --bg-header: #0f1620;
+  --bg-card: #121a24;
+  --bg-card-hover: #172230;
+  --bg-card-elevated: #1b2737;
+  --bg-surface-subtle: rgba(255, 255, 255, 0.03);
+  --bg-input: #0b1016;
+
+  /* Border & Dividers */
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-medium: rgba(255, 255, 255, 0.12);
+  --border-active: rgba(16, 185, 129, 0.35);
+
+  /* Primary Accent: Agricultural Green */
+  --primary: #10b981;
+  --primary-hover: #059669;
+  --primary-light: rgba(16, 185, 129, 0.15);
+  --primary-glow: rgba(16, 185, 129, 0.3);
+
+  /* Semantic Health & Status Palette */
+  --status-healthy: #10b981;
+  --status-healthy-bg: rgba(16, 185, 129, 0.12);
+  --status-healthy-border: rgba(16, 185, 129, 0.3);
+
+  --status-warning: #f59e0b;
+  --status-warning-bg: rgba(245, 158, 11, 0.12);
+  --status-warning-border: rgba(245, 158, 11, 0.3);
+
+  --status-danger: #ef4444;
+  --status-danger-bg: rgba(239, 68, 68, 0.12);
+  --status-danger-border: rgba(239, 68, 68, 0.3);
+
+  --status-water: #0ea5e9;
+  --status-water-bg: rgba(14, 165, 233, 0.12);
+  --status-water-border: rgba(14, 165, 233, 0.3);
+
+  --status-yield: #a855f7;
+  --status-yield-bg: rgba(168, 85, 247, 0.12);
+  --status-yield-border: rgba(168, 85, 247, 0.3);
+
+  /* Typography Colors */
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-inverse: #0f172a;
+
+  /* Typography */
+  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Shadows & Elevations */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-card: 0 4px 16px -2px rgba(0, 0, 0, 0.4), 0 2px 6px -1px rgba(0, 0, 0, 0.2);
+  --shadow-glow-green: 0 0 24px -4px rgba(16, 185, 129, 0.25);
+  --shadow-glow-red: 0 0 24px -4px rgba(239, 68, 68, 0.25);
+  --shadow-glow-blue: 0 0 24px -4px rgba(14, 165, 233, 0.25);
+  --shadow-glow-amber: 0 0 24px -4px rgba(245, 158, 11, 0.25);
+
+  /* Radii & Layout */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-pill: 9999px;
+
+  --sidebar-width: 260px;
+  --header-height: 72px;
+  --transition-fast: 0.18s ease;
+  --transition-base: 0.25s ease;
+  --transition-smooth: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Base Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-app);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* App Shell Layout */
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg-app);
+  position: relative;
+}
+
+/* Main Content Area */
+.main-wrapper {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  transition: margin-left var(--transition-smooth);
+}
+
+.main-content {
+  flex: 1;
+  padding: 24px 32px 48px 32px;
+  max-width: 1680px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Typography Utility */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+.text-secondary {
+  color: var(--text-secondary);
+}
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Badge Utilities */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+}
+
+.badge-healthy {
+  background: var(--status-healthy-bg);
+  color: var(--status-healthy);
+  border-color: var(--status-healthy-border);
+}
+
+.badge-warning {
+  background: var(--status-warning-bg);
+  color: var(--status-warning);
+  border-color: var(--status-warning-border);
+}
+
+.badge-danger {
+  background: var(--status-danger-bg);
+  color: var(--status-danger);
+  border-color: var(--status-danger-border);
+}
+
+.badge-water {
+  background: var(--status-water-bg);
+  color: var(--status-water);
+  border-color: var(--status-water-border);
+}
+
+.badge-purple {
+  background: var(--status-yield-bg);
+  color: var(--status-yield);
+  border-color: var(--status-yield-border);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-main);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #042517;
+  border-color: var(--primary);
+}
+.btn-primary:hover {
+  background: #22c55e;
+  box-shadow: 0 0 12px var(--primary-glow);
+}
+
+.btn-outline {
+  background: var(--bg-surface-subtle);
+  color: var(--text-primary);
+  border-color: var(--border-medium);
+}
+.btn-outline:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+}
+.btn-ghost:hover {
+  background: var(--bg-surface-subtle);
+  color: var(--text-primary);
+}
+
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+.btn-link-action {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: color var(--transition-fast);
+}
+.btn-link-action:hover {
+  color: #34d399;
+  text-decoration: underline;
+}
+
+.btn-link-action.action-danger {
+  color: var(--status-danger);
+}
+.btn-link-action.action-danger:hover {
+  color: #f87171;
+}
+
+.btn-link-action.action-water {
+  color: var(--status-water);
+}
+.btn-link-action.action-water:hover {
+  color: #38bdf8;
+}
+
+/* Offline / Fallback Notice Banner */
+.status-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: var(--radius-md);
+  margin-bottom: 24px;
+  font-size: 13px;
+  color: #fcd34d;
+}
+
+.status-banner.banner-connected {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.25);
+  color: #6ee7b7;
+}
+
+.status-banner-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Media Queries */
+@media (max-width: 1200px) {
+  .main-content {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 992px) {
+  .main-wrapper {
+    margin-left: 0;
+  }
+}

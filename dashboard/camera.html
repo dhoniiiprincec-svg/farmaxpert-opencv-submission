@@ -1,0 +1,429 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmXpert Leaf Detection</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #071a0d;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 18px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #6ee7a0;
+        }
+
+        .camera-box {
+            background: #102a18;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        video, #preview {
+            width: 100%;
+            display: block;
+            background: black;
+            aspect-ratio: 4 / 3;
+            object-fit: contain;
+        }
+
+        #preview { display: none; }
+
+        .controls {
+            margin-top: 12px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        select, button, .upload-label {
+            flex: 1;
+            min-width: 130px;
+            padding: 13px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            text-align: center;
+        }
+
+        select {
+            background: #183d23;
+            color: white;
+        }
+
+        button, .upload-label {
+            background: #22c55e;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button.stop { background: #dc2626; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        #fileInput { display: none; }
+
+        .result {
+            margin-top: 15px;
+            padding: 18px;
+            background: #102a18;
+            border-radius: 15px;
+        }
+
+        .status { color: #6ee7a0; font-weight: bold; }
+
+        .detection {
+            margin-top: 10px;
+            padding: 12px;
+            background: #183d23;
+            border-radius: 10px;
+            overflow-wrap: anywhere;
+        }
+
+        .confidence {
+            margin-top: 7px;
+            color: #facc15;
+        }
+
+        .recommendation {
+            margin-top: 12px;
+            line-height: 1.5;
+        }
+
+        .hint {
+            color: #b8d6c0;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        canvas { display: none; }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>🌱 FarmXpert Leaf Detection</h1>
+
+    <div class="camera-box">
+        <video id="camera" autoplay playsinline></video>
+        <img id="preview" alt="Selected leaf preview">
+    </div>
+
+    <div class="controls">
+        <select id="crop" aria-label="Select crop">
+            <option value="tomato">🍅 Tomato</option>
+            <option value="maize">🌽 Maize</option>
+        </select>
+
+        <button id="startBtn">📷 Start Camera</button>
+
+        <label class="upload-label" for="fileInput">
+            📁 Upload Leaf
+        </label>
+        <input
+            id="fileInput"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+        >
+    </div>
+
+    <div class="controls">
+        <button id="analyzeBtn" disabled>🔍 Analyze Uploaded Image</button>
+    </div>
+
+    <p class="hint">
+        Choose Tomato or Maize, then start the camera for live detection
+        or upload a JPG, PNG, or WEBP leaf image for analysis.
+    </p>
+
+    <div class="result">
+        <h2>🧠 AI Detection</h2>
+
+        <div>Status: <span id="status" class="status">Camera stopped</span></div>
+
+        <div class="detection">
+            <strong>Detection:</strong>
+            <span id="disease">Waiting...</span>
+
+            <div class="confidence">
+                Confidence: <span id="confidence">-</span>
+            </div>
+
+            <div>Risk: <span id="risk">-</span></div>
+        </div>
+        
+        
+        <div class="recommendation">
+            <strong>Recommendation:</strong>
+            <div id="recommendation">Start the camera or upload a leaf image.</div>
+        </div>
+
+        <div id="opencvQualityStatus"
+            class="detection"
+            style="display: none;">
+           <strong>OpenCV Image Quality:</strong>
+           <div id="qualityMessage">Waiting for image analysis...</div>
+        </div>
+
+        
+    </div>
+</div>
+
+<canvas id="canvas"></canvas>
+
+<script>
+console.log("FARMAXPERT CAMERA FILE LOADED");
+const video = document.getElementById("camera");
+const preview = document.getElementById("preview");
+const canvas = document.getElementById("canvas");
+const startBtn = document.getElementById("startBtn");
+const cropSelect = document.getElementById("crop");
+const fileInput = document.getElementById("fileInput");
+const analyzeBtn = document.getElementById("analyzeBtn");
+
+const statusText = document.getElementById("status");
+const diseaseText = document.getElementById("disease");
+const confidenceText = document.getElementById("confidence");
+const riskText = document.getElementById("risk");
+const recommendationText = document.getElementById("recommendation");
+const qualityBox = document.getElementById("opencvQualityStatus");
+const qualityMessage = document.getElementById("qualityMessage");
+
+let stream = null;
+let running = false;
+let timer = null;
+let selectedFile = null;
+let requestInProgress = false;
+
+function setStatus(message) {
+    statusText.textContent = message;
+}
+
+function stopCamera() {
+    running = false;
+
+    if (timer) {
+        clearInterval(timer);
+        timer = null;
+    }
+
+    if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        stream = null;
+    }
+
+    video.srcObject = null;
+    startBtn.textContent = "📷 Start Camera";
+    startBtn.classList.remove("stop");
+}
+
+startBtn.addEventListener("click", async () => {
+    if (running) {
+        stopCamera();
+        setStatus("Camera stopped");
+        return;
+    }
+
+    try {
+        preview.style.display = "none";
+        video.style.display = "block";
+
+        stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: { ideal: "environment" } },
+            audio: false
+        });
+
+        video.srcObject = stream;
+        await video.play();
+
+        running = true;
+        startBtn.textContent = "⛔ Stop Camera";
+        startBtn.classList.add("stop");
+        setStatus("Camera running");
+
+        startDetection();
+    } catch (error) {
+        console.error(error);
+        setStatus("Camera unavailable");
+        alert("Allow camera access or use Upload Leaf instead.");
+    }
+});
+
+function startDetection() {
+    if (timer) clearInterval(timer);
+
+    // Analyze a frame every 1.5 seconds.
+    timer = setInterval(() => {
+        if (running && !requestInProgress) {
+            sendFrameToAI();
+        }
+    }, 1500);
+}
+
+async function sendImageToAI(blob, filename) {
+    if (requestInProgress) return;
+
+    requestInProgress = true;
+    setStatus("Analyzing image...");
+
+    const formData = new FormData();
+    formData.append("file", blob, filename);
+
+    try {
+        const crop = cropSelect.value;
+        const apiBaseUrl =
+    localStorage.getItem('farmxpert_api_url') ||
+    `${window.location.protocol}//${window.location.hostname}:8000/api/v1`;
+
+const apiUrl = `${apiBaseUrl}/inference/image?crop=${encodeURIComponent(crop)}`;
+
+const response = await fetch(apiUrl, {
+    method: "POST",
+    body: formData
+});
+
+        if (!response.ok) {
+            throw new Error(`Server returned HTTP ${response.status}`);
+        }
+
+        
+        
+        const data = await response.json();
+        
+        // Update disease prediction and recommendation
+        updateResult(data);
+
+        // Display OpenCV image quality
+        const opencv = data.opencv;
+        const qualityBox =
+            document.getElementById("opencvQualityStatus");
+        const qualityMessage =
+            document.getElementById("qualityMessage");
+        console.log("FARMAXPERT API DATA:", data);
+        console.log("OPENCV QUALITY:", data.opencv);
+        console.log("QUALITY PANEL:", qualityBox);
+        if (opencv && qualityBox && qualityMessage) {
+            qualityBox.style.display = "block";
+
+            if (opencv.quality_warnings &&
+                opencv.quality_warnings.length > 0) {
+                qualityMessage.textContent =
+                    "⚠️ RETAKE RECOMMENDED: " +
+                    opencv.quality_warnings.join(" ");
+
+                qualityBox.style.backgroundColor = "#fff3cd";
+                qualityBox.style.color = "#664d03";
+            } else {
+                qualityMessage.textContent =
+                    "✅ " + opencv.image_quality +
+                    " | Brightness: " + opencv.brightness +
+                    " | Sharpness: " + opencv.sharpness;
+
+                qualityBox.style.backgroundColor = "#d1e7dd";
+                qualityBox.style.color = "#0f5132";
+            }
+        } else {
+            console.error(
+                "Quality display elements or OpenCV data missing.",
+                { opencv, qualityBox, qualityMessage }
+            );
+        }
+
+    } catch (error) {
+        console.error("AI request failed:", error);
+        setStatus("AI request failed: check API connection");
+        recommendationText.textContent =
+            "Check that the backend is running and this page can reach its API.";
+    } finally {
+        requestInProgress = false;
+    }
+}
+
+function sendFrameToAI() {
+    if (!video.videoWidth || !video.videoHeight) return;
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    canvas.toBlob(blob => {
+        if (blob && running) {
+            sendImageToAI(blob, "camera_frame.jpg");
+        }
+    }, "image/jpeg", 0.85);
+}
+
+fileInput.addEventListener("change", () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+        alert("Please choose a JPG, PNG, or WEBP image.");
+        fileInput.value = "";
+        return;
+    }
+
+    stopCamera();
+    selectedFile = file;
+
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = "block";
+    video.style.display = "none";
+
+    analyzeBtn.disabled = false;
+    setStatus("Image selected — ready to analyze");
+    diseaseText.textContent = "Waiting for analysis...";
+    confidenceText.textContent = "-";
+    riskText.textContent = "-";
+    recommendationText.textContent =
+        "Check the preview, choose the correct crop, then click Analyze Uploaded Image.";
+});
+
+analyzeBtn.addEventListener("click", async () => {
+    if (!selectedFile) return;
+
+    await sendImageToAI(selectedFile, selectedFile.name);
+});
+
+cropSelect.addEventListener("change", () => {
+    if (running) {
+        setStatus("Crop changed — next frame will use the selected crop");
+    }
+});
+
+function updateResult(data) {
+    setStatus("🟢 AI analysis complete");
+    diseaseText.textContent = data.disease_name ?? "No disease label returned";
+
+    const confidence = Number(data.confidence);
+    confidenceText.textContent = Number.isFinite(confidence)
+        ? `${(confidence * 100).toFixed(1)}%`
+        : "-";
+
+    riskText.textContent = data.risk ?? "Not provided";
+    recommendationText.textContent =
+        data.recommendation ?? "Continue monitoring.";
+}
+</script>
+</body>
+</html>
